@@ -14,12 +14,14 @@ public class Solution {
         this.last = last;
     }
 
-    public boolean equals(Solution n) {
+    public boolean equals(Object n) {
 //        return n.first.equals(first) && n.last.equals(last);
         if (this == n) return true;
+        System.out.println(getClass() + " - " + n.getClass());
         if (getClass() != n.getClass()) return false;
-        if (first != null ? !first.equals(n.first) : n.first != null) return false;
-        if (last != null ? !last.equals(n.last) : n.last != null) return false;
+        Solution sol = (Solution) n;
+        if (first != null ? !first.equals(sol.first) : sol.first != null) return false;
+        if (last != null ? !last.equals(sol.last) : sol.last != null) return false;
         return true;
     }
 
@@ -32,8 +34,8 @@ public class Solution {
         s.add(new Solution("Donald", "Duck"));
         System.out.println(s.contains(new Solution("Donald", "Duck")));
         ///
-        Solution sol1 = new Solution("Donald", "Duck");
-        Solution sol2 = new Solution("Donald", "Duck");
+        Solution sol1 = new Solution("D", "Duck");
+        Solution sol2 = new Solution("D", "Duck");
         System.out.println(sol1.hashCode());
         System.out.println(sol2.hashCode());
     }
