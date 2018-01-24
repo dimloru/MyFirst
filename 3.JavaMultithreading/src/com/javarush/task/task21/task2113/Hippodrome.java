@@ -13,7 +13,12 @@ public class Hippodrome {
         return horses;
     }
 
+    public static Hippodrome game;
+
     public static void main(String[] args) {
+//        game = new Hippodrome();
+
+
 
     }
 }
