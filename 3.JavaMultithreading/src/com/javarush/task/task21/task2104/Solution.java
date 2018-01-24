@@ -15,7 +15,12 @@ public class Solution {
     }
 
     public boolean equals(Solution n) {
-        return n.first.equals(first) && n.last.equals(last);
+//        return n.first.equals(first) && n.last.equals(last);
+        if (this == n) return true;
+        if (getClass() != n.getClass()) return false;
+        if (first != null ? !first.equals(n.first) : n.first != null) return false;
+        if (last != null ? !last.equals(n.last) : n.last != null) return false;
+        return true;
     }
 
     public int hashCode() {
@@ -26,5 +31,10 @@ public class Solution {
         Set<Solution> s = new HashSet<>();
         s.add(new Solution("Donald", "Duck"));
         System.out.println(s.contains(new Solution("Donald", "Duck")));
+        ///
+        Solution sol1 = new Solution("Donald", "Duck");
+        Solution sol2 = new Solution("Donald", "Duck");
+        System.out.println(sol1.hashCode());
+        System.out.println(sol2.hashCode());
     }
 }
