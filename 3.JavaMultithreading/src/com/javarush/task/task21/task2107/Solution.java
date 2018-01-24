@@ -68,8 +68,7 @@ public class Solution implements Cloneable {
 
         @Override
         protected Object clone() throws CloneNotSupportedException {
-            User clonedUser = new User(this.age, this.name);
-            return clonedUser;
+            return new User(this.age, this.name);
         }
     }
 }
