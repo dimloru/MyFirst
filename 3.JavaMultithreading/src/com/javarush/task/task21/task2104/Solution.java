@@ -19,8 +19,9 @@ public class Solution {
 //        return n.first.equals(first) && n.last.equals(last);
         if (this == n) return true;
         if (n == null) return false;
-        if (getClass() != n.getClass()) return false;
+//        if (getClass() != n.getClass()) return false;
 //        if(!n.getClass().getSimpleName().equals("Solution")) return false;
+        if (!(n instanceof Solution)) return false;
 
         Solution sol = (Solution) n;
 
