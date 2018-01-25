@@ -28,15 +28,21 @@ public class Hippodrome {
     }
 
     public void move() {
-
+//        game.getHorses().forEach(horse -> horse.move());
+        horses.forEach(horse -> horse.move());
     }
 
     public void print() {
 
     }
 
-    public void run() {
+    public void run() throws InterruptedException {
+        for (int i = 0; i < 100; i++) {
+            move();
+            print();
+            Thread.sleep(200);
+        }
 
     }
-
+    
 }
