@@ -21,7 +21,9 @@ public class Hippodrome {
         myHorses.add(new Horse("Belka", 3, 0));
         myHorses.add(new Horse("Strelka", 3, 0));
         myHorses.add(new Horse("Pushok", 3, 0));
+        // doesn't work as game.horse.add..... as it is an action with a private field
         game = new Hippodrome(myHorses);
+
 
         game.run();
 
@@ -29,6 +31,7 @@ public class Hippodrome {
 
     public void move() {
 //        game.getHorses().forEach(horse -> horse.move());
+        // Method of this object, that has the field "horses"
         horses.forEach(horse -> horse.move());
     }
 
