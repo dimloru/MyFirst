@@ -26,4 +26,17 @@ public class Hippodrome {
 
 
     }
+
+    public void move() {
+
+    }
+
+    public void print() {
+
+    }
+
+    public void run() {
+
+    }
+
 }
