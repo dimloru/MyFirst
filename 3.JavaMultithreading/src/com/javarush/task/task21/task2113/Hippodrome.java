@@ -16,14 +16,14 @@ public class Hippodrome {
 
     public static Hippodrome game;
 
-    public static void main(String[] args) {
-        game = new Hippodrome(new ArrayList<Horse>());
-        game.horses.add(new Horse("Belka", 3, 0));
-        game.horses.add(new Horse("Strelka", 3, 0));
-        game.horses.add(new Horse("Pushok", 3, 0));
+    public static void main(String[] args) throws InterruptedException {
+        List<Horse> myHorses = new ArrayList<>();
+        myHorses.add(new Horse("Belka", 3, 0));
+        myHorses.add(new Horse("Strelka", 3, 0));
+        myHorses.add(new Horse("Pushok", 3, 0));
+        game = new Hippodrome(myHorses);
 
-
-
+        game.run();
 
     }
 
@@ -33,7 +33,8 @@ public class Hippodrome {
     }
 
     public void print() {
-
+        horses.forEach(horse -> horse.print());
+        for (int i = 0; i < 10; i++) System.out.println();
     }
 
     public void run() throws InterruptedException {
