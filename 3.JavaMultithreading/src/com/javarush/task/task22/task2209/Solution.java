@@ -13,7 +13,6 @@ public class Solution {
         Scanner sc = new Scanner(System.in);
         String file = sc.next();
         sc.close();
-        System.out.println(file);
         List<String> words = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(new File(file))) {
@@ -22,32 +21,48 @@ public class Solution {
         String[] wordsArray = new String[words.size()];
         words.toArray(wordsArray);
         StringBuilder result = getLine(wordsArray);
-//        System.out.println(result.toString());
-
+        System.out.println(result.toString());
     }
 
     public static StringBuilder getLine(String... words) {
         StringBuilder sb = new StringBuilder();
-        List<Integer> used = new ArrayList<>();
+        sb.append("");
+        if (words == null || words.length == 0) return sb;
         List<String> wordsList = new ArrayList<>(Arrays.asList(words));
-        String word = wordsList.get(0);
-        sb.append(word);
-        char checkChar = word.toLowerCase().charAt(word.length() - 1);
-        wordsList.remove(0);
-        while (wordsList.size() > 0) {
+
+//        System.out.println("1 " + words);
+//        System.out.println("2 " + wordsList);
+        //Searching for the first word (earliest letter)
+        String firstWord = wordsList.get(0);
+        char checkFirst = firstWord.toLowerCase().charAt(0);
+        int firstIndex = 0;
+        for (int i = 1; i < wordsList.size(); i++) {
+            if (wordsList.get(i).charAt(0) < checkFirst) {
+                checkFirst = wordsList.get(i).charAt(0);
+                firstIndex = i;
+                firstWord = wordsList.get(i);
+            }
+        }
+        sb.append(firstWord);
+        char checkChar = firstWord.toLowerCase().charAt(firstWord.length() - 1);
+        wordsList.remove(firstIndex);
+        boolean finish = false;
+        while (wordsList.size() > 0 && !finish) {
             for (int i = 0; i < wordsList.size(); i++) {
                 String w = wordsList.get(i);
+//                System.out.print(w + " ");
+                finish = true;
                 if (w.toLowerCase().charAt(0) == checkChar) {
                     sb.append(" " + w);
                     checkChar = w.toLowerCase().charAt(w.length() - 1);
                     wordsList.remove(i);
-                    break;  // выходим из for
+                    finish = false;
+//                    System.out.println();
+                    break;
                 }
-                break;
             }
+            // нашел слово - вышел из цикла или цикл закончился, пройдя все итерации
         }
-
-
-          return null;
+        return sb;
     }
 }
