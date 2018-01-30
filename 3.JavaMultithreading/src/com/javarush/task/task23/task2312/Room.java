@@ -92,6 +92,8 @@ public class Room {
         System.out.println("Game Over!");
     }
 
+
+
     /**
      * Выводим на экран текущее состояние игры
      */

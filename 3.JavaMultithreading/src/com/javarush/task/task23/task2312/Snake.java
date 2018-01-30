@@ -33,6 +33,25 @@ public class Snake {
     }
 
     public void move() {
+        if (isAlive) {
+            switch (direction) {
+                case UP:
+                    move(0, -1);
+                    break;
+                case DOWN:
+                    move(0, 1);
+                    break;
+                case LEFT:
+                    move(-1, 0);
+                    break;
+                case RIGHT:
+                    move(1, 0);
+                    break;
+            }
+        }
+    }
+
+    public void move(int x, int y) {
 
     }
 
@@ -40,6 +59,15 @@ public class Snake {
         sections = new ArrayList<>();
         sections.add(new SnakeSection(x, y));
         isAlive = true;
+    }
+
+    public void checkBorders(SnakeSection head) {
+        if (head.getX() < 0 || head.getX() > (Room.game.getWidth() - 1) ||
+                head.getY() < 0 || head.getY() > Room.game.getHeight() - 1) isAlive = false;
+    }
+
+    public void checkBody(SnakeSection head) {
+        if (sections.contains(head)) isAlive = false;
     }
 
 
