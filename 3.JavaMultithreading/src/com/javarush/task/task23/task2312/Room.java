@@ -92,8 +92,6 @@ public class Room {
         System.out.println("Game Over!");
     }
 
-
-
     /**
      * Выводим на экран текущее состояние игры
      */
@@ -152,7 +150,6 @@ public class Room {
         game.createMouse();
         game.run();
     }
-
 
     private int initialDelay = 520;
     private int delayStep = 20;
