@@ -45,7 +45,7 @@ public class Canvas {
     void setPoint(double x, double y, char c) {
         int x0 = (int) Math.round(x);
         int y0 = (int) Math.round(y);
-        if (y0 < 0 || y0 >= matrix.length) return;
+        if (y0 < 0 || y0 >= matrix.length) return;       // Проверка на выход объекта за границы холста
         if (x0 < 0 || x0 >= matrix[y0].length) return;
 
         matrix[y0][x0] = c;

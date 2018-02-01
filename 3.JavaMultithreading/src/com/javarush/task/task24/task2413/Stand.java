@@ -60,5 +60,5 @@ public class Stand extends BaseObject {
     @Override
     void draw(Canvas canvas) {
         canvas.drawMatrix(x - radius + 1, y, matrix, 'M');
-    }
+}
 }
