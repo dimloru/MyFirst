@@ -5,6 +5,10 @@ import java.util.List;
 public class Arkanoid {
     private int width, height;
 
+    private Ball ball;
+    private Stand stand;
+    private List<Brick> bricks;
+
     public int getWidth() {
         return width;
     }
@@ -25,10 +29,6 @@ public class Arkanoid {
         this.width = width;
         this.height = height;
     }
-
-    private Ball ball;
-    private Stand stand;
-    private List<Brick> bricks;
 
     public void setBall (Ball ball) {
         this.ball = ball;
@@ -65,10 +65,16 @@ public class Arkanoid {
     }
 
     void move() {
-        
+        stand.move();
+        ball.move();
     }
 
-
-
+    void draw(Canvas canvas) {
+        stand.draw(canvas);
+        ball.draw(canvas);
+        for (Brick brick : bricks) {
+            brick.draw(canvas);
+        }
+    }
 
 }

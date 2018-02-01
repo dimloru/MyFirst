@@ -1,7 +1,7 @@
 package com.javarush.task.task24.task2413;
 
 public abstract class BaseObject {
-    private double x, y, radius;
+    protected double x, y, radius;
 
     public double getX() {
         return x;
