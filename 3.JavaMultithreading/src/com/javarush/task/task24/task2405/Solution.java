@@ -19,20 +19,31 @@ public class Solution implements Action {
                 for (int i = param; i > 0; i--) System.out.println(i);
                 param = 0;
 
-                Action fc = new FirstClass() {
+                Action sc = new FirstClass() {
                     @Override
                     public Action getDependantAction() {
-                        return new SecondClass();
+                        this.someAction();
+                        return new SecondClass() {
+                            @Override
+                            public void someAction() {
+                                sb.append(SPECIFIC_ACTION_FOR_ANONYMOUS_SECOND_CLASS_PARAM);
+                                sb.append(param);
+                                super.someAction();
+                            }
+                        };
                     }
                 }.getDependantAction();
-                fc.someAction();
-//                Action sec = fc.getDependantAction();
-//                sec.someAction();
-
-            } else {
-                Action sc = new SecondClass();
-
                 sc.someAction();
+            } else {
+                new SecondClass() { // Анонимный класс наследник
+                    @Override
+                    public void someAction() {
+                        sb.append(SPECIFIC_ACTION_FOR_ANONYMOUS_SECOND_CLASS_PARAM); // строка "class Second...." добавляется в конструкторе
+                        // родительского класса, private
+                        sb.append(param);  // Добавляем требуемые строки к string builder
+                        super.someAction(); // вызываем some action родителя
+                    }
+                }.someAction();
             }
 
         }
