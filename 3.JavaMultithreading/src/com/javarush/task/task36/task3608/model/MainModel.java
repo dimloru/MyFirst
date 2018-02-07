@@ -3,7 +3,10 @@ package com.javarush.task.task36.task3608.model;
 import com.javarush.task.task36.task3608.bean.User;
 import com.javarush.task.task36.task3608.model.service.UserService;
 import com.javarush.task.task36.task3608.model.service.UserServiceImpl;
+import com.javarush.task.task36.task3608.Util;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainModel implements Model {
@@ -17,8 +20,12 @@ public class MainModel implements Model {
 
     @Override
     public void loadUsers() {
-        modelData.setUsers(userService.getUsersBetweenLevels(1, 100));
+        modelData.setUsers(getAllUsers());
         modelData.setDisplayDeletedUserList(false);
+    }
+
+    private List<User> getAllUsers() {
+        return userService.filterOnlyActiveUsers(userService.getUsersBetweenLevels(1, 100));
     }
 
     public void loadDeletedUsers() {
