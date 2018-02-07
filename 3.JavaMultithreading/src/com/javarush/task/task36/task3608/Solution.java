@@ -16,7 +16,6 @@ public class Solution {
         controller.setModel(model);
         controller.setUsersView(usersView);
         controller.setEditUserView(editUserView);
-
         editUserView.setController(controller);
 
         usersView.fireEventShowAllUsers();

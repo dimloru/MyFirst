@@ -40,6 +40,8 @@ public class MainModel implements Model {
     }
 
     public void deleteUserById(long id) {
-
+        userService.deleteUser(id);
+        modelData.setUsers(getAllUsers());
+        modelData.setDisplayDeletedUserList(false);
     }
 }
