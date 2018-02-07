@@ -44,4 +44,11 @@ public class MainModel implements Model {
         modelData.setUsers(getAllUsers());
         modelData.setDisplayDeletedUserList(false);
     }
+
+    public void changeUserData(String name, long id, int level) {
+        //implementation
+        userService.createOrUpdateUser(name, id, level);
+        modelData.setUsers(getAllUsers());
+        modelData.setDisplayDeletedUserList(false);
+    }
 }
