@@ -2,11 +2,11 @@ package com.javarush.task.task29.task2909.human;
 
 import java.util.Date;
 
-public class Student extends Human {
+public class Student extends UniversityPerson {
     private double averageGrade;
-    private String university;
     private Date beginningOfSession;
     private Date endOfSession;
+    private int course;
 
     public Student(String name, int age, double averageGrade) {
         super(name, age);
@@ -20,18 +20,6 @@ public class Student extends Human {
     public void learn() {
     }
 
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    public void printData() {
-        System.out.println("Студент: " + name);
-    }
-
     public void incAverageGradeBy01() {
         averageGrade += 0.1;
     }
@@ -40,15 +28,12 @@ public class Student extends Human {
         averageGrade += 0.2;
     }
 
-    public void setValue(String name, double value) {
-        if (name.equals("averageGrade")) {
-            averageGrade = value;
-            return;
-        }
-        if (name.equals("course")) {
-            course = (int) value;
-            return;
-        }
+    public void setAverageGrade(double averageGrade) {
+        this.averageGrade = averageGrade;
+    }
+
+    public void setCourse(int course) {
+        this.course = course;
     }
 
     public void setBeginningOfSession(int day, int month, int year) {
@@ -59,7 +44,16 @@ public class Student extends Human {
         endOfSession = new Date(year, month, day);
     }
 
+    public int getCourse() {
+        return course;
+    }
+
     public double getAverageGrade() {
         return averageGrade;
+    }
+
+    @Override
+    public String getPosition() {
+        return "Студент";
     }
 }
