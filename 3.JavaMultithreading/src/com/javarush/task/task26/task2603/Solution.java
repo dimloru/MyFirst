@@ -3,6 +3,7 @@ package com.javarush.task.task26.task2603;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /*
 Убежденному убеждать других не трудно
@@ -26,9 +27,15 @@ public class Solution {
 //                result = comparator.compare(o1, o2);
 //                if (result != 0) break;
 //            }
+//            result = Arrays.stream(comparators)
+//                    .reduce((t1, t2) -> 0, Comparator::thenComparing)
+//                    .compare(o1, o2);
+
             result = Arrays.stream(comparators)
-                    .reduce((t1, t2) -> 0, Comparator::thenComparing)
-                    .compare(o1, o2);
+                    .flatMap(comparator -> Stream.of(comparator.compare(o1,o2)))
+                    .filter( num -> num != 0)
+                    .findFirst()
+                    .orElse(0);
 
             return result;
 
