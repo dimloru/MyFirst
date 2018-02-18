@@ -1,6 +1,9 @@
 package com.javarush.task.task26.task2609;
 
-/* 
+import java.util.HashMap;
+import java.util.Map;
+
+/*
 Распределение элементов по корзинам с собственным локом
 */
 public class Solution {
