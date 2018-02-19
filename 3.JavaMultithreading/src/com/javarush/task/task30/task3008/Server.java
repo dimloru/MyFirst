@@ -52,6 +52,26 @@ public class Server {
 
             return name;
         }
+
+        private void sendListOfUsers(Connection connection, String userName) throws IOException {
+            for (String user : connectionMap.keySet()) {
+                if (!user.equals(userName)) {
+                    Message msg = new Message(USER_ADDED, user);
+                    connection.send(msg);
+                }
+            }
+        }
+
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
+            while (true) {
+                Message msg = connection.receive();
+                if (msg.getType() == TEXT) {
+                    sendBroadcastMessage(new Message(TEXT, userName + ": " + msg.getData()));
+                } else {
+                    ConsoleHelper.writeMessage("Not a TEXT");
+                }
+            }
+        }
     }
 
     public static void sendBroadcastMessage(Message message) {
@@ -60,8 +80,9 @@ public class Server {
                 connectionMap.get(name).send(message);
             } catch (IOException e) {
                 System.out.printf("Could not sent message to %s", name);
-//                e.printStackTrace();
             }
         }
     }
+
+
 }
