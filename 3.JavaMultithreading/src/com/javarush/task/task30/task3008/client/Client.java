@@ -54,7 +54,6 @@ public class Client {
                 connection = new Connection(socket);
                 clientHandshake();
                 clientMainLoop();
-                // Чтобы остановить сервер по команде нужно создать отдельный listener
             } catch (IOException e) {
                 notifyConnectionStatusChanged(false);
             } catch (ClassNotFoundException e) {
@@ -115,9 +114,6 @@ public class Client {
                 Client.this.notify();
             }
         }
-
-
-
     }
 
     protected String getServerAddress() {
