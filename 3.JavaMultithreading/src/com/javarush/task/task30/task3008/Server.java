@@ -1,7 +1,5 @@
 package com.javarush.task.task30.task3008;
 
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
