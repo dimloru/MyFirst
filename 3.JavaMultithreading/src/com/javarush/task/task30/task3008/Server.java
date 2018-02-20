@@ -1,5 +1,7 @@
 package com.javarush.task.task30.task3008;
 
+import org.omg.CORBA.CODESET_INCOMPATIBLE;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,6 +34,31 @@ public class Server {
 
         public Handler (Socket socket) {
             this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            String name = null;
+            ConsoleHelper.writeMessage(socket.getRemoteSocketAddress() + " connected");
+            try (Connection connection = new Connection(socket)) {
+//                ConsoleHelper.writeMessage("Connected to " + connection.getRemoteSocketAddress());
+                name = serverHandshake(connection);
+                sendBroadcastMessage(new Message(USER_ADDED, name));
+                sendListOfUsers(connection, name);
+                serverMainLoop(connection, name);
+            } catch (IOException e) {
+                ConsoleHelper.writeMessage("An error occured while working with remote address");
+            } catch (ClassNotFoundException e) {
+                ConsoleHelper.writeMessage("An error occured while working with remote address");
+            } finally {
+                if (name != null) {
+                    connectionMap.remove(name);
+                    sendBroadcastMessage(new Message(USER_REMOVED, name));
+                    ConsoleHelper.writeMessage("Connection to remote address " + socket + " closed");
+                }
+            }
+
+
         }
 
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
