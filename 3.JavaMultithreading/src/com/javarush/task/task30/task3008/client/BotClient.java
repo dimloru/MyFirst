@@ -24,9 +24,14 @@ public class BotClient extends Client {
         protected void processIncomingMessage(String message) {
             ConsoleHelper.writeMessage(message);
             String[] splitMessage = message.split(":", 2);
+
+//            if (!splitMessage[0].contains("date_bot")) {
+//                sendTextMessage(splitMessage[0] + "===" + splitMessage[1]);
+//            }
+
             if (splitMessage.length == 2 && splitMessage[1] != null) {
                 DateFormat dateFormat = null;
-                switch (splitMessage[1]) {
+                switch (splitMessage[1].trim()) {
                     case "дата":
                         dateFormat = new SimpleDateFormat("d.MM.YYYY");
                         break;

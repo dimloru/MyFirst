@@ -96,14 +96,7 @@ public class Client {
 
 
         protected void processIncomingMessage(String message) {
-            //разных типов, нет :
-
             ConsoleHelper.writeMessage(message);
-            String[] separateMessage = message.split(":", 2);
-            if (separateMessage.length == 2 && separateMessage[1] != null) {
-
-            }
-
         }
 
         protected void informAboutAddingNewUser(String userName) {
