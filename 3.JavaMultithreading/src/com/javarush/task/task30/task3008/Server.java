@@ -39,7 +39,6 @@ public class Server {
             String name = null;
             ConsoleHelper.writeMessage(socket.getRemoteSocketAddress() + " connected");
             try (Connection connection = new Connection(socket)) {
-//                ConsoleHelper.writeMessage("Connected to " + connection.getRemoteSocketAddress());
                 name = serverHandshake(connection);
                 sendBroadcastMessage(new Message(USER_ADDED, name));
                 sendListOfUsers(connection, name);
@@ -55,8 +54,6 @@ public class Server {
                     ConsoleHelper.writeMessage("Connection to remote address " + socket + " closed");
                 }
             }
-
-
         }
 
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {

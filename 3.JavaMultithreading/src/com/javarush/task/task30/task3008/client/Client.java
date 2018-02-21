@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class Client {
     protected Connection connection;
-    private volatile boolean clientConnected = false; //private
+    private volatile boolean clientConnected = false;
 
     public static void main(String[] args) {
         new Client().run();
@@ -41,7 +41,6 @@ public class Client {
             if (shouldSendTextFromConsole()) sendTextMessage(text);
         }
     }
-
 
     public class SocketThread extends Thread {
 
@@ -97,7 +96,14 @@ public class Client {
 
 
         protected void processIncomingMessage(String message) {
+            //разных типов, нет :
+
             ConsoleHelper.writeMessage(message);
+            String[] separateMessage = message.split(":", 2);
+            if (separateMessage.length == 2 && separateMessage[1] != null) {
+
+            }
+
         }
 
         protected void informAboutAddingNewUser(String userName) {
