@@ -8,19 +8,19 @@ import java.nio.file.Paths;
 
 public class Archiver {
     public static void main(String[] args) {
-        System.out.println("Please enter the path to the archive:");
-        String zipPathString = null;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            zipPathString = reader.readLine();
-        } catch(IOException e) {}
-        Path zipPath = Paths.get(zipPathString);
-        ZipFileManager zipFileManager = new ZipFileManager(zipPath);
+        String zipPathString = null, sourcePathString = null;
 
-        String sourcePathString = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            System.out.println("Please enter the path to the archive:");
+            zipPathString = reader.readLine();
+            System.out.println("Please enter the path to the source file:");
             sourcePathString = reader.readLine();
         } catch(IOException e) {}
+
+        Path zipPath = Paths.get(zipPathString);
+        ZipFileManager zipFileManager = new ZipFileManager(zipPath);
         Path sourcePath = Paths.get(sourcePathString);
+
         try {
             zipFileManager.createZip(sourcePath);
         } catch (Exception e) {
