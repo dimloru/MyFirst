@@ -129,56 +129,56 @@ public class ZipFileManager {
         Files.move(tempZipFile, zipFile, StandardCopyOption.REPLACE_EXISTING);
     }
 
+    public void addFile(Path absolutePath) throws Exception {
+        addFiles(Collections.singletonList(absolutePath));
+    }
+
     public void addFiles(List<Path> absolutePathList) throws Exception {
+        // Проверяем существует ли zip файл
         if (!Files.isRegularFile(zipFile)) {
             throw new WrongZipFileException();
         }
 
-        Path temp = Files.createTempFile("", "");     //(zipFile.getParent(),"", "-tmp.zip");
-        List<Path> archivedFiles = new ArrayList<>();
+        // Создаем временный файл
+        Path tempZipFile = Files.createTempFile(null, null);
+        List<Path> archiveFiles = new ArrayList<>();
 
-        try (
-                ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile));
-                ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(temp));
-                ) {
-            ZipEntry entry = zipInputStream.getNextEntry();
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(tempZipFile))) {
+            try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))) {
 
-            while (entry != null) {
-                String archivedFileName = entry.getName();
-                Path archivedFile = Paths.get(archivedFileName);
-                archivedFiles.add(archivedFile);
+                ZipEntry zipEntry = zipInputStream.getNextEntry();
+                while (zipEntry != null) {
+                    String fileName = zipEntry.getName();
+                    archiveFiles.add(Paths.get(fileName));
 
-                zipOutputStream.putNextEntry(new ZipEntry(archivedFileName));
-                copyData(zipInputStream, zipOutputStream);
-                zipOutputStream.closeEntry();
-                zipInputStream.closeEntry();
+                    zipOutputStream.putNextEntry(new ZipEntry(fileName));
+                    copyData(zipInputStream, zipOutputStream);
 
-                entry = zipInputStream.getNextEntry();
+                    zipInputStream.closeEntry();
+                    zipOutputStream.closeEntry();
+
+                    zipEntry = zipInputStream.getNextEntry();
+                }
             }
-            //works only for files
-            //to work with dirs need to imrove logic and use FileManager - collect files
 
-
-
-            for (Path newFile : absolutePathList) {
-                if (!Files.isRegularFile(newFile)) {
+            // Архивируем новые файлы
+            for (Path file : absolutePathList) {
+                if (Files.isRegularFile(file))
+                {
+                    if (archiveFiles.contains(file.getFileName()))
+                        ConsoleHelper.writeMessage(String.format("Файл '%s' уже существует в архиве.", file.toString()));
+                    else {
+                        addNewZipEntry(zipOutputStream, file.getParent(), file.getFileName());
+                        ConsoleHelper.writeMessage(String.format("Файл '%s' добавлен в архиве.", file.toString()));
+                    }
+                }
+                else
                     throw new PathIsNotFoundException();
-                }
-
-                if (!archivedFiles.contains(newFile.getFileName())) {
-                    addNewZipEntry(zipOutputStream, newFile.getParent(), newFile.getFileName());
-                    ConsoleHelper.writeMessage(newFile.getFileName() + " added to archive");
-                } else {
-                    ConsoleHelper.writeMessage("Такой файл уже есть в архиве");
-                }
             }
         }
 
-        Files.move(temp, zipFile, StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    public void addFile(Path absolutePath) throws Exception {
-        addFiles(Collections.singletonList(absolutePath));
+        // Перемещаем временный файл на место оригинального
+        Files.move(tempZipFile, zipFile, StandardCopyOption.REPLACE_EXISTING);
     }
 
     public List<FileProperties> getFilesList() throws Exception {
