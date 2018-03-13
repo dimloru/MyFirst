@@ -8,8 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 Пишем свою ThreadFactory
 */
 public class Solution {
-    static AtomicInteger factoryNumber = new AtomicInteger(0);
-
     public static void main(String[] args) {
         class EmulateThreadFactoryTask implements Runnable {
 
@@ -44,8 +42,9 @@ public class Solution {
     }
 
     public static class AmigoThreadFactory implements ThreadFactory {
+        static AtomicInteger factoryNumberSequece = new AtomicInteger(0);
         AtomicInteger threadNumber = new AtomicInteger(0);
-        int thisFactotyNumber = factoryNumber.incrementAndGet();
+        int thisFactotyNumber = factoryNumberSequece.incrementAndGet();
         @Override
         public Thread newThread(Runnable r) {
             Thread t = new Thread(r);
