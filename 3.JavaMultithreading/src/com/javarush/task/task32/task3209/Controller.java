@@ -19,7 +19,6 @@ public class Controller {
         myView.init();
         controller.init();
 
-
     }
 
     public void init() {
