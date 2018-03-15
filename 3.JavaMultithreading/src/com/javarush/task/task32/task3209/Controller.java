@@ -29,7 +29,7 @@ public class Controller {
     }
 
     public void init() {
-
+        createNewDocument();
     }
 
     public void resetDocument() {
@@ -61,6 +61,26 @@ public class Controller {
             ExceptionHandler.log(e);
         }
         return stringWriter.toString();
+    }
+
+    public void createNewDocument() {
+        view.selectHtmlTab();
+        resetDocument();
+        view.setTitle("HTML редактор"); //тут можно запросить имя нового документа и установить в title
+        view.resetUndo();
+        currentFile = null;
+    }
+
+    public void openDocument() {
+
+    }
+
+    public void saveDocument() {
+
+    }
+
+    public void saveDocumentAs() {
+
     }
 
     public void exit() {
