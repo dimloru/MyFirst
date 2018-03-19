@@ -15,6 +15,12 @@ public class Order {
         dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    public int getTotalCookingTime() {
+        int totalCookingTime = 0;
+        for (Dish dish : dishes) totalCookingTime += dish.getDuration();
+        return totalCookingTime;
+    }
+
     @Override
     public String toString() {
         if (dishes == null || dishes.isEmpty()) return "";
@@ -28,5 +34,9 @@ public class Order {
         sb.append(tablet.toString());
 
         return sb.toString();
+    }
+
+    public boolean isEmpty() {
+        return (dishes == null || dishes.isEmpty());
     }
 }
