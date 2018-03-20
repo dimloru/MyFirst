@@ -22,18 +22,19 @@ public class Tablet extends Observable {
         Order order = null;
         try {
             order = new Order(this);
+            ConsoleHelper.writeMessage(order.toString());
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
 
         if (!order.isEmpty()) {
-            setChanged();
-            notifyObservers(order);
             try {
                 new AdvertisementManager(order.getTotalCookingTime() * 60).processVideos();
             } catch (NoVideoAvailableException e) {
                 logger.log(Level.INFO, "No video is available for the order " + order);
             }
+            setChanged();
+            notifyObservers(order);
         }
         return order;
     }
