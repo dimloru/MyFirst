@@ -39,7 +39,6 @@ public class Tablet extends Observable {
         return order;
     }
 
-
     @Override
     public String toString() {
         return "Tablet{number=" + number + "}"; //"Tablet number=" + number; //??? order??

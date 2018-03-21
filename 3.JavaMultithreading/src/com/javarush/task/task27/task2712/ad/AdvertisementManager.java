@@ -3,6 +3,9 @@ package com.javarush.task.task27.task2712.ad;
 
 
 import com.javarush.task.task27.task2712.ConsoleHelper;
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+import com.javarush.task.task27.task2712.statistic.event.NoAvailableVideoEventDataRow;
+import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +29,7 @@ public class AdvertisementManager {
         searchAdVariants(0, null, 0); //можно потом перенести и сделать return
 
         if (toShow.isEmpty()) {
+            StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(timeSeconds));
             throw new NoVideoAvailableException();
         }
 
@@ -36,12 +40,18 @@ public class AdvertisementManager {
             int perDisplayingResult =  Long.compare(amountPerOneDisplayingP2, amountPerOneDisplayingP1);
             if (perDisplayingResult != 0) return perDisplayingResult;
 
-//            double secCostP1 = amountPerOneDisplayingP1 / (double) p1.getDuration(); //secCost - to Advert
-//            double secCostP2 = amountPerOneDisplayingP2 / (double) p2.getDuration();
-
-//            return Double.compare(secCostP1, secCostP2);
             return Double.compare(p1.getOneSecCost(), p2.getOneSecCost());
         });
+
+        long amount = 0;
+        int totalDuration = 0;
+
+        for (Advertisement ad : toShow) {
+            amount += ad.getAmountPerOneDisplaying();
+            totalDuration += ad.getDuration();
+        }
+
+        StatisticManager.getInstance().register(new VideoSelectedEventDataRow(toShow, amount, totalDuration));
 
         for (Advertisement ad : toShow) {
             ConsoleHelper.writeMessage(ad.getName() + " is displaying... " + ad.getAmountPerOneDisplaying() + ", " +
