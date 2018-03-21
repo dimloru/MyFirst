@@ -29,8 +29,18 @@ public class VideoSelectedEventDataRow implements EventDataRow {
         return currentDate;
     }
 
+
+    //method to test
+    public void setDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
     @Override
     public int getTime() {
         return 0;
+    }
+
+    public long getAmount() {
+        return amount;
     }
 }
