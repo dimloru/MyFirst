@@ -15,13 +15,25 @@ public class DirectorTablet {
         long totalAmount = 0;
         for (Map.Entry<Date, Long> entry : profitMap.entrySet()) {
             totalAmount += entry.getValue();
-            System.out.println(dateFormat.format(entry.getKey()) + " - " + entry.getValue());
+            ConsoleHelper.writeMessage(dateFormat.format(entry.getKey()) + " - " +
+                    String.format("%.2f", (double)entry.getValue() / 100));
         }
-        System.out.println("Total - " + totalAmount);
+        ConsoleHelper.writeMessage("Total - " + String.format("%.2f", (double)totalAmount / 100));
+        ConsoleHelper.writeMessage("");
     }
 
     public void printCookWorkloading() {
-
+        StatisticManager statisticManager = StatisticManager.getInstance();
+        Map<Date, Map<String, Integer>> result = statisticManager.countCookWork();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        for (Date date : result.keySet()) {
+            ConsoleHelper.writeMessage(dateFormat.format(date));
+            for (Map.Entry<String, Integer> cookTime : result.get(date).entrySet()) {
+                ConsoleHelper.writeMessage(cookTime.getKey() + " - " + (int)Math.ceil((double)cookTime.getValue() / 60) + " min");
+            }
+            ConsoleHelper.writeMessage("");
+        }
+        ConsoleHelper.writeMessage("");
     }
 
     public void printActiveVideoSet() {
