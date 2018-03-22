@@ -25,6 +25,10 @@ public class Advertisement {
         return name;
     }
 
+    public int getHits() {
+        return hits;
+    }
+
     public int getDuration() {
         return duration;
     }

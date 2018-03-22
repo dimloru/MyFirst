@@ -1,5 +1,6 @@
 package com.javarush.task.task27.task2712;
 
+import com.javarush.task.task27.task2712.ad.StatisticAdvertisementManager;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 
 import java.text.SimpleDateFormat;
@@ -37,10 +38,12 @@ public class DirectorTablet {
     }
 
     public void printActiveVideoSet() {
-
+        Map<String, Integer> result = StatisticAdvertisementManager.getInstance().getActiveVideoSet();
+        result.forEach((k, v) -> ConsoleHelper.writeMessage(k + " - " + v));
     }
 
     public void printArchivedVideoSet() {
-
+        Map<String, Integer> result = StatisticAdvertisementManager.getInstance().getArchivedVideoSet();
+        result.keySet().forEach(ConsoleHelper::writeMessage);
     }
 }

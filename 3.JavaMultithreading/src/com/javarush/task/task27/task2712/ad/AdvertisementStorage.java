@@ -15,6 +15,9 @@ public class AdvertisementStorage {
         videos.add(new Advertisement(someContent, "First Video", 5000, 100, 3 * 60)); // 3 min   //50
         videos.add(new Advertisement(someContent, "Second Video", 100, 10, 15 * 60)); //15 min   //10
         videos.add(new Advertisement(someContent, "Third Video", 400,  2, 10 * 60)); //10 min     //200
+        // from me to test inactive
+        videos.add(new Advertisement(someContent, "Null Video", 400,  0, 10 * 60)); //10 min     //200
+
     }
 
     private final List<Advertisement> videos = new ArrayList<>();
