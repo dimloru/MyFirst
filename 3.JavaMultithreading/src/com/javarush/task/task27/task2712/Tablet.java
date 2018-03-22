@@ -28,7 +28,7 @@ public class Tablet extends Observable {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
 
-        checkEmptyAndNotify(order); //null check
+        checkEmptyAndNotify(order); //null check before hitting method
         return order;
     }
 
