@@ -7,16 +7,21 @@ import com.javarush.task.task27.task2712.kitchen.TestOrder;
 
 
 import java.io.IOException;
-import java.util.Observable;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Tablet extends Observable {
+public class Tablet {
     private final int number;
     private static Logger logger = Logger.getLogger(Tablet.class.getName());
+    private LinkedBlockingQueue<Order> queue;
 
     public Tablet (int number) {
         this.number = number;
+    }
+
+    public void setQueue(LinkedBlockingQueue<Order> queue) {
+        this.queue = queue;
     }
 
     public Order createOrder() {
@@ -28,7 +33,7 @@ public class Tablet extends Observable {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
 
-        checkEmptyAndNotify(order); //null check before hitting method
+        checkEmptyAndAddOrderToQueue(order); //null check before hitting method
         return order;
     }
 
@@ -41,19 +46,23 @@ public class Tablet extends Observable {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
 
-        checkEmptyAndNotify(order);
+        checkEmptyAndAddOrderToQueue(order);
 
     }
 
-    private void checkEmptyAndNotify(Order order) {
+    private void checkEmptyAndAddOrderToQueue(Order order) {
         if (!order.isEmpty()) {
             try {
                 new AdvertisementManager(order.getTotalCookingTime() * 60).processVideos();
             } catch (NoVideoAvailableException e) {
                 logger.log(Level.INFO, "No video is available for the order " + order);
             }
-            setChanged();
-            notifyObservers(order);
+        }
+
+        try {
+            queue.put(order);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

@@ -128,9 +128,4 @@ public class StatisticManager {
 //        statisticStorage.put(cookedEvent);
 //    }
 
-    private Set<Cook> cooks = new HashSet<>();
-
-    public void register(Cook cook) {
-        cooks.add(cook);
-    }
 }
