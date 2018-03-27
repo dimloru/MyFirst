@@ -34,8 +34,10 @@ public class View extends JPanel {
         g.drawString("Score: " + controller.getScore(), 140, 465);
 
         if (isGameWon) {
+            isGameWon = false;
             JOptionPane.showMessageDialog(this, "You've won!");
         } else if(isGameLost) {
+            isGameLost = false;
             JOptionPane.showMessageDialog(this, "You've lost :(");
         }
     }
