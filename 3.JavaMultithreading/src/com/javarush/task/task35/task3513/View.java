@@ -36,9 +36,15 @@ public class View extends JPanel {
         if (isGameWon) {
             isGameWon = false;
             JOptionPane.showMessageDialog(this, "You've won!");
+            // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+            // new JDialog ("do u want to restart")
+            // set default close operation
+
+
         } else if(isGameLost) {
             isGameLost = false;
             JOptionPane.showMessageDialog(this, "You've lost :(");
+
         }
     }
 

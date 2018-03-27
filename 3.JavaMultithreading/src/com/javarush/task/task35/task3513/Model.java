@@ -3,12 +3,16 @@ package com.javarush.task.task35.task3513;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
     public int score;
     public int maxTile;
+    private Stack<Tile[][]> previousStates = new Stack<>();
+    private Stack<Integer> previousScores = new Stack<>();
+    private boolean isSaveNeeded = true;
 
     public Model() {
         resetGameTiles();
@@ -104,12 +108,14 @@ public class Model {
     }
 
     public void left() {
+        if (isSaveNeeded) saveState(gameTiles);
         boolean changed = false;
         for (int i = 0; i < gameTiles.length; i++) {
             if (compressTiles(gameTiles[i])) changed = true;
             if (mergeTiles(gameTiles[i])) changed = true;
         }
         if (changed) addTile();
+        isSaveNeeded = true;
     }
 
     private void turnClockwise() {
@@ -123,6 +129,7 @@ public class Model {
     }
 
     public void down() {
+        saveState(gameTiles);
         turnClockwise();
         left();
         turnClockwise();
@@ -131,6 +138,7 @@ public class Model {
     }
 
     public void right() {
+        saveState(gameTiles);
         turnClockwise();
         turnClockwise();
         left();
@@ -140,10 +148,32 @@ public class Model {
     }
 
     public void up() {
+        saveState(gameTiles);
         turnClockwise();
         turnClockwise();
         turnClockwise();
         left();
         turnClockwise();
+    }
+
+    private void saveState(Tile[][] source) {
+        if(source != null && source.length != 0 && source[0].length != 0) {
+            Tile[][] toSave = new Tile[source.length][source[0].length];
+            for (int i = 0; i < source.length; i++) {
+                for (int j = 0; j < source[0].length; j++) {
+                    toSave[i][j] = new Tile(source[i][j].getValue());
+                }
+            }
+            previousStates.push(toSave);
+            previousScores.push(score);
+            isSaveNeeded = false;
+        }
+    }
+
+    public void rollback() {
+        if (!previousStates.isEmpty() && !previousScores.isEmpty()) {
+            gameTiles = previousStates.pop();
+            score = previousScores.pop();
+        }
     }
 }
