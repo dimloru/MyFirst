@@ -1,6 +1,7 @@
 package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Model {
@@ -44,6 +45,25 @@ public class Model {
             if (num == list.size()) num--;
             list.get(num).setValue(Math.random() < 0.9 ? 2 : 4);
         }
+    }
+
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
+    public boolean canMove() {
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                if (gameTiles[i][j].value == 0) return true;
+                if (j < FIELD_WIDTH - 1) {
+                    if (gameTiles[i][j].value == gameTiles[i][j + 1].value) return true;
+                }
+                if (i < FIELD_WIDTH - 1) {
+                    if (gameTiles[i][j].value == gameTiles[i+1][j].value) return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean compressTiles(Tile[] tiles) {
@@ -92,4 +112,38 @@ public class Model {
         if (changed) addTile();
     }
 
+    private void turnClockwise() {
+        Tile[][] result = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                result[j][FIELD_WIDTH - 1 - i] = gameTiles[i][j];
+            }
+        }
+        gameTiles = result;
+    }
+
+    public void down() {
+        turnClockwise();
+        left();
+        turnClockwise();
+        turnClockwise();
+        turnClockwise();
+    }
+
+    public void right() {
+        turnClockwise();
+        turnClockwise();
+        left();
+        turnClockwise();
+        turnClockwise();
+
+    }
+
+    public void up() {
+        turnClockwise();
+        turnClockwise();
+        turnClockwise();
+        left();
+        turnClockwise();
+    }
 }
