@@ -16,6 +16,9 @@ public class Solution {
         File newFile = new File(newFileString);
         //        if (FileUtils.isExist(newFile)) FileUtils.deleteFile(newFile); //если есть такой фал - удаляем
         FileUtils.renameFile(resultFileAbsolutePath, newFile); // и переименовываем файл для записи
+        //renames  resultFileAbsolutePath into newFile
+        // outStream логично было бы создавать из resultFileAbsolutePath, но нет
+
         // теперь используем переименованный resultFileAbsPath
 //        System.out.println(newFileString);
 
