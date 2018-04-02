@@ -148,8 +148,8 @@ public class ZipFileManager {
 
                 ZipEntry zipEntry = zipInputStream.getNextEntry();
                 while (zipEntry != null) {
-                    String fileName = zipEntry.getName();
-                    archiveFiles.add(Paths.get(fileName));
+                    String fileName = zipEntry.getName(); //relative name
+                    archiveFiles.add(Paths.get(fileName)); //
 
                     zipOutputStream.putNextEntry(new ZipEntry(fileName));
                     copyData(zipInputStream, zipOutputStream);
@@ -165,7 +165,7 @@ public class ZipFileManager {
             for (Path file : absolutePathList) {
                 if (Files.isRegularFile(file))
                 {
-                    if (archiveFiles.contains(file.getFileName()))
+                    if (archiveFiles.contains(file.getFileName())) // FileName //то есть с вложенными папками работает не очень
                         ConsoleHelper.writeMessage(String.format("Файл '%s' уже существует в архиве.", file.toString()));
                     else {
                         addNewZipEntry(zipOutputStream, file.getParent(), file.getFileName());
