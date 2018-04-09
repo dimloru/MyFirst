@@ -23,7 +23,7 @@ public class Solution {
         String[] parts = new String[args.length - 1];
         System.arraycopy(args, 1, parts, 0, parts.length);
         Arrays.sort(parts);
-        List<InputStream> inputStreams = new ArrayList<>();
+        List<InputStream> inputStreams = new ArrayList<>(); // можно было решить treeset'ом
 
         try {
             for (String part : parts) {
