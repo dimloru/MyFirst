@@ -15,6 +15,8 @@ import java.io.StringWriter;
 
 import org.w3c.dom.*;
 
+// комментарий с ноутбука
+
 /*
 Комментарий внутри xml
 */
