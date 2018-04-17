@@ -24,8 +24,6 @@ public class Solution {
         try {
             JAXBContext context = JAXBContext.newInstance(obj.getClass());
             Marshaller marshaller = context.createMarshaller();
-//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // если  оставить, то transformer не делает перенос после comment
-
             StringWriter stringWriter = new StringWriter();
             marshaller.marshal(obj, stringWriter);
             str = stringWriter.toString();
@@ -33,7 +31,6 @@ public class Solution {
             e.printStackTrace();
         }
         if (str == null) return "";                                        // null pointer check
-//        System.out.println(str);
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);
@@ -41,7 +38,6 @@ public class Solution {
         Document doc = db.parse(new ByteArrayInputStream(str.getBytes()));
         doc.normalize(); //??
 
-//        Element root = doc.getDocumentElement();
         NodeList nodes = doc.getElementsByTagName(tagName);
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -61,34 +57,14 @@ public class Solution {
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");      // включить отступы и переносы
         transformer.setOutputProperty(OutputKeys.STANDALONE, "no");
-//        transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, tagName);   // заовачивает текст в cdata
-//        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");       // опускает xml declaration )
         transformer.transform(domSource, streamResult);
 
-
-
-
-//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//        Transformer transformer = transformerFactory.newTransformer();
-//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//        transformer.setOutputProperty(OutputKeys.STANDALONE, "no");
-//+        DOMSource domSource = new DOMSource(doc);
-//+
-//+        StringWriter resultString = new StringWriter();
-//+        StreamResult result = new StreamResult(resultString);
-//+       transformer.transform(domSource,result);
-//+        return resultString.toString();
-
-
-
-
-        return writer.toString();//"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + writer.toString();
+        return writer.toString();
     }
 
     private static void addCdata (Node start) {
         if (start.getNodeType() == Node.TEXT_NODE &&
                 start.getTextContent().matches(".*[<>\"'&].*")) {
-//            System.out.println("Adding cdata:\n" + start.getTextContent());
             String content = start.getTextContent();
             Node cdataNode = start.getOwnerDocument().createCDATASection(content);
             Node parent = start.getParentNode();
@@ -103,13 +79,10 @@ public class Solution {
         }
     }
 
-
-
     public static void main(String[] args) throws Exception {
         Cat cat = new Cat("Murzik", 13);
         System.out.println(toXmlWithComment(cat, "name", "<!-- comment -->"));
 
         System.out.println(Solution.toXmlWithComment(new First(), "second", "it's a comment"));
-
     }
 }
