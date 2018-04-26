@@ -16,9 +16,9 @@ public class Solution {
 
         Map<Integer, ConvertableUser> newMap = ConvertableUtil.convert(users);
         System.out.println(newMap);
-        //{236=ConvertableUser{id=236, name='Third User'},
-        // 235=ConvertableUser{id=235, name='Second User'},
-        // 234=ConvertableUser{id=234, name='First User'}}
+//        {236=ConvertableUser{id=236, name='Third User'},
+//         235=ConvertableUser{id=235, name='Second User'},
+//         234=ConvertableUser{id=234, name='First User'}}
 
         //////////////////////////////////////////////////////////
 

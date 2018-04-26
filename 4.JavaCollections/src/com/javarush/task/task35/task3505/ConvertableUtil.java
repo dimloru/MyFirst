@@ -6,8 +6,15 @@ import java.util.Map;
 
 public class ConvertableUtil {
 
-    public static Map convert(List list) {
-        Map result = new HashMap();
+    public static <K,V extends Convertable<K>> Map<K,V> convert(List<V> list) {
+        // no args check
+        Map<K,V> result = new HashMap<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            K key = list.get(i).getKey();
+            result.put(key, list.get(i));
+        }
+
         return result;
     }
 }
