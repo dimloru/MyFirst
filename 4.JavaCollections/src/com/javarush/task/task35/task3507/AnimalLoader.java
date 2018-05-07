@@ -27,6 +27,6 @@ public class AnimalLoader extends ClassLoader {
             e.printStackTrace();
         }
 
-        return defineClass(pack + "data." + name, buffer, 0, buffer.length);
+        return defineClass(pack + "data." + name, buffer, 0, buffer.length); // first param can be null
     }
 }
