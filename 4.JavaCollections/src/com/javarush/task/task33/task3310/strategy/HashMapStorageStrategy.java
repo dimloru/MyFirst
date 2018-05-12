@@ -3,7 +3,7 @@ package com.javarush.task.task33.task3310.strategy;
 import java.util.HashMap;
 
 public class HashMapStorageStrategy implements StorageStrategy {
-    private HashMap<Long, String> data;
+    private HashMap<Long, String> data = new HashMap<>();
 
     @Override
     public boolean containsKey(Long key) {
