@@ -9,6 +9,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy{
     float loadFactor = DEFAULT_LOAD_FACTOR;
 
     public int hash(Long k) {
+        //some added comment to commit
 
     }
 
