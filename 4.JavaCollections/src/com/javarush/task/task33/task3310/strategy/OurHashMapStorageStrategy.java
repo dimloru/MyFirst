@@ -43,8 +43,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy{
     }
 
     public void resize(int newCapacity) {
-        int oldCapacity = table.length;
-        Entry[] newTable = new Entry[oldCapacity * 2]; // max INT not checked
+        Entry[] newTable = new Entry[newCapacity];
         transfer(newTable);
         table = newTable;
         threshold = (int)(table.length * loadFactor);

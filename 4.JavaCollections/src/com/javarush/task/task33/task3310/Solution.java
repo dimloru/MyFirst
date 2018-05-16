@@ -1,5 +1,6 @@
 package com.javarush.task.task33.task3310;
 
+import com.javarush.task.task33.task3310.strategy.FileStorageStrategy;
 import com.javarush.task.task33.task3310.strategy.HashMapStorageStrategy;
 import com.javarush.task.task33.task3310.strategy.OurHashMapStorageStrategy;
 import com.javarush.task.task33.task3310.strategy.StorageStrategy;
@@ -10,7 +11,9 @@ import java.util.Set;
 
 public class Solution {
     public static void main(String[] args) {
-        testStrategy(new OurHashMapStorageStrategy(), 10000);
+        testStrategy(new FileStorageStrategy(), 1000);
+        testStrategy(new OurHashMapStorageStrategy(), 1000);
+        testStrategy(new HashMapStorageStrategy(), 1000);
 
     }
 
@@ -50,7 +53,10 @@ public class Solution {
         time = (finish.getTime() - start.getTime());
         Helper.printMessage(time.toString());
 
+        System.out.println(testStrings.size() + " " + strings.size()); // remove
+
         if (testStrings.equals(strings)) {
+//        if (testStrings.size() == strings.size()) {
             Helper.printMessage("Тест пройден.");
         } else {
             Helper.printMessage("Тест не пройден.");

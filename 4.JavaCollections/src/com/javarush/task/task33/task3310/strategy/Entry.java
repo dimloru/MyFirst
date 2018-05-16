@@ -1,7 +1,6 @@
 package com.javarush.task.task33.task3310.strategy;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 
 public class Entry implements Serializable {
