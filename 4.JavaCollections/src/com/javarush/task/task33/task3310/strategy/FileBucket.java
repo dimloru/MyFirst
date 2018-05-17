@@ -14,7 +14,6 @@ public class FileBucket {
             Files.deleteIfExists(path);
             Files.createFile(path);
             file = path.toFile();
-//            System.out.println(path.toString() + " created");
             file.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,9 +33,7 @@ public class FileBucket {
                 OutputStream fos = Files.newOutputStream(path);
                 ObjectOutputStream oos = new ObjectOutputStream(fos)
         ) {
-            System.out.println("Writing to file " + file);
             oos.writeObject(entry);
-//            oos.flush(); //
         } catch (IOException e) { e.printStackTrace(); }
     }
 

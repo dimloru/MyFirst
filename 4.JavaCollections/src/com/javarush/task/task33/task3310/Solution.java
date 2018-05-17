@@ -53,10 +53,9 @@ public class Solution {
         time = (finish.getTime() - start.getTime());
         Helper.printMessage(time.toString());
 
-        System.out.println(testStrings.size() + " " + strings.size()); // remove
+//        System.out.println(testStrings.size() + " " + strings.size()); // remove
 
         if (testStrings.equals(strings)) {
-//        if (testStrings.size() == strings.size()) {
             Helper.printMessage("Тест пройден.");
         } else {
             Helper.printMessage("Тест не пройден.");

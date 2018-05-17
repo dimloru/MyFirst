@@ -24,7 +24,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy{
     public Entry getEntry(Long key) {
         if (table == null || table.length == 0) return null;
 
-        // можно объединит со следующим циклом, но так лучша readability
+        // можно объединит со следующим циклом, но так лучше readability
         if (key == null) { // working with null key
             Entry entry = table[0];
             while (entry != null && entry.getKey() != null) {

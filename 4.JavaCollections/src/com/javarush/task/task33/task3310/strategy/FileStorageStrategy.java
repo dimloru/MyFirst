@@ -36,7 +36,7 @@ public class FileStorageStrategy implements StorageStrategy {
     public Entry getEntry(Long key) { //как выдать все записи
         if (table == null || table.length == 0) return null;
 
-        // можно объединит со следующим циклом, но так лучша readability
+        // можно объединит со следующим циклом, но так лучше readability
         if (key == null) { // working with null key
             Entry entry = table[0].getEntry();
 
@@ -47,13 +47,12 @@ public class FileStorageStrategy implements StorageStrategy {
         }
 
         int index = indexFor(hash(key), table.length);
-//        System.out.println("File size " + table[index].getFileSize());
         Entry entry = table[index].getEntry();
 
         if (entry == null) return null;
         while (true) {
                 if (entry == null ||
-                        entry.getKey() != null && !entry.getKey().equals(key)) // correct with null keys
+                        entry.getKey() != null && entry.getKey().equals(key)) // correct with null keys
                     break;
             entry = entry.next;
         }
@@ -124,7 +123,6 @@ public class FileStorageStrategy implements StorageStrategy {
 
     public void createEntry(int hash, Long key, String value, int bucketIndex) {
         table[bucketIndex].putEntry(new Entry(hash, key, value, null));
-//        System.out.println("Creating");
     }
 
     @Override
@@ -140,7 +138,6 @@ public class FileStorageStrategy implements StorageStrategy {
     @Override
     public void put(Long key, String value) {
         addEntry(hash(key), key, value, indexFor(hash(key), table.length));
-//        System.out.println("Putting: hash " + hash(key) + " key " + key + " " + value + " index " + indexFor(hash(key), table.length));
     }
 
     @Override
