@@ -9,10 +9,8 @@ public class Solution {
         LogParser logParser = new LogParser(Paths.get("c:/JavaX/logs/"));
 //        System.out.println(logParser.getNumberOfUniqueIPs(null, new Date()));
 
+        System.out.println(logParser.getAllUsers());
 
 
-        for (String ip: logParser.getIPsForEvent(Event.SOLVE_TASK, null, new Date())) {
-            System.out.println(ip);
-        }
     }
 }
