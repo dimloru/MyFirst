@@ -282,7 +282,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery {
     @Override
     public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
         return getDateFilteredStream(after, before)
-                .filter(s -> user.equals(s.userName))
+                .filter(s -> user.equals(s.userName) && s.event == Event.LOGIN)
                 .map(s -> s.date)
                 .sorted()
                 .findFirst()
@@ -301,16 +301,27 @@ public class LogParser implements IPQuery, UserQuery, DateQuery {
 
     @Override
     public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
-        return null;
+        return getDateFilteredStream(after, before)
+                .filter(s -> s.userName.equals(user) && s.event == Event.DONE_TASK && s.taskNumber == task)
+                .map(s -> s.date)
+                .sorted()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
-        return null;
+        return getDateFilteredStream(after, before)
+                .filter(s -> s.userName.equals(user) && s.event == Event.WRITE_MESSAGE && s.status == Status.OK)
+                .map(s -> s.date)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
-        return null;
+        return getDateFilteredStream(after, before)
+                .filter(s -> user.equals(s.userName) && s.event == Event.DOWNLOAD_PLUGIN && s.status == Status.OK)
+                .map(s -> s.date)
+                .collect(Collectors.toSet());
     }
 }
