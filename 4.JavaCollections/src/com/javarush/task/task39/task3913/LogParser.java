@@ -1,6 +1,7 @@
 package com.javarush.task.task39.task3913;
 
 import com.javarush.task.task39.task3913.query.DateQuery;
+import com.javarush.task.task39.task3913.query.EventQuery;
 import com.javarush.task.task39.task3913.query.IPQuery;
 import com.javarush.task.task39.task3913.query.UserQuery;
 
@@ -13,10 +14,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     private Path logDir;
     private List<Record> records = new ArrayList<>();
 
@@ -323,5 +325,102 @@ public class LogParser implements IPQuery, UserQuery, DateQuery {
                 .filter(s -> user.equals(s.userName) && s.event == Event.DOWNLOAD_PLUGIN && s.status == Status.OK)
                 .map(s -> s.date)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public int getNumberOfAllEvents(Date after, Date before) {
+        return (int)getDateFilteredStream(after, before)
+                .map(s -> s.event)
+                .distinct()
+                .count();
+    }
+
+    @Override
+    public Set<Event> getAllEvents(Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .map(s -> s.event)
+                .distinct()
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getEventsForIP(String ip, Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .filter(s -> ip.equals(s.ip))
+                .map(s -> s.event)
+                .distinct()
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getEventsForUser(String user, Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .filter(s -> user.equals(s.userName))
+                .map(s -> s.event)
+                .distinct()
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getFailedEvents(Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .filter(s -> s.status == Status.FAILED)
+                .map(s -> s.event)
+                .distinct()
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getErrorEvents(Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .filter(s -> s.status == Status.ERROR)
+                .map (s -> s.event)
+                .distinct()
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
+        return (int)getDateFilteredStream(after, before)
+                .filter(s -> s.event == Event.SOLVE_TASK && s.taskNumber == task)
+                .count();
+    }
+
+    @Override
+    public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {
+        return (int)getDateFilteredStream(after, before)
+                .filter(s -> s.event == Event.DONE_TASK && s.taskNumber == task)
+                .count();
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
+        Map<Integer, Integer> result;
+        result = getDateFilteredStream(after, before)
+                .filter(s -> s.event == Event.SOLVE_TASK)
+                .collect(Collectors.toMap(
+                        Record::getTaskNumber,
+                        s -> 1,
+                        Integer::sum
+                        ));
+        return result;
+
+
+
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
+        return getDateFilteredStream(after, before)
+                .filter(s -> s.event == Event.DONE_TASK)
+                .collect(Collector.of(
+                        HashMap::new,
+                        (b, s) -> b.merge(s.taskNumber, 1, Integer::sum),
+                        (b1, b2) -> {
+                            b1.putAll(b2);
+                            return b1;
+                        }
+
+                ));
     }
 }

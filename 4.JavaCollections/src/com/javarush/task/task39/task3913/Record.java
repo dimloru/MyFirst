@@ -19,6 +19,10 @@ public class Record {
         this.status = status;
     }
 
+    public int getTaskNumber() {
+        return taskNumber;
+    }
+
     @Override
     public String toString() {
         return "[ip = " + ip +
