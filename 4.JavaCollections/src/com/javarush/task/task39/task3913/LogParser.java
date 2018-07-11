@@ -1,9 +1,6 @@
 package com.javarush.task.task39.task3913;
 
-import com.javarush.task.task39.task3913.query.DateQuery;
-import com.javarush.task.task39.task3913.query.EventQuery;
-import com.javarush.task.task39.task3913.query.IPQuery;
-import com.javarush.task.task39.task3913.query.UserQuery;
+import com.javarush.task.task39.task3913.query.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +15,10 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
     private Path logDir;
     private List<Record> records = new ArrayList<>();
+    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public LogParser(Path logDir) {
         this.logDir = logDir;
@@ -32,7 +30,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     }
 
     private void init() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         for (File file : logDir.toFile().listFiles()) {
             if (file.toString().endsWith(".log")) {
                 try {
@@ -404,9 +401,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
                         Integer::sum
                         ));
         return result;
-
-
-
     }
 
     @Override
@@ -416,11 +410,88 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
                 .collect(Collector.of(
                         HashMap::new,
                         (b, s) -> b.merge(s.taskNumber, 1, Integer::sum),
-                        (b1, b2) -> {
-                            b1.putAll(b2);
-                            return b1;
-                        }
+                        (b1, b2) -> {b1.putAll(b2);
+                            return b1;}
 
                 ));
+    }
+
+    @Override
+    public Set<Object> execute(String query) {
+        if (query == null) return null;
+
+        String[] splitQuery = query.trim().split(" ");
+        String what = splitQuery[1];
+        String field = null, value = null;
+        if (splitQuery.length > 3) {
+            field = splitQuery[3];
+            int startIndex, endIndex;
+            if ((startIndex = query.indexOf("\"")) != -1 && (endIndex = query.indexOf("\"", startIndex + 1)) != -1) {
+                value = query.substring(startIndex + 1, endIndex);
+            }
+        }
+
+        String fieldIntoLambda = field;
+        String valueIntoLambda = value;
+
+        return records.stream() // check get, for etc
+                .filter(s -> {
+                    if (fieldIntoLambda == null || valueIntoLambda == null) return true;
+                    //  ip, user, date, event или status
+                    if (fieldIntoLambda.equals("ip")) return s.ip.equals(valueIntoLambda);
+                    else if (fieldIntoLambda.equals("user")) return s.userName.equals(valueIntoLambda);
+                    //parsing
+                    else if (fieldIntoLambda.equals("date"))
+                        try {
+                            Date thisDate = dateFormat.parse(valueIntoLambda);
+                            Date sdate = s.date;
+                            return s.date.equals(thisDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    else if (fieldIntoLambda.equals("event")) return s.event.equals(Event.valueOf(valueIntoLambda));
+                    else if (fieldIntoLambda.equals("status")) return s.status.equals(Status.valueOf(valueIntoLambda));
+                    else return false;
+                })
+                .map(s -> {
+                    if (what.equals("ip")) return s.ip;
+                    else if (what.equals("user")) return s.userName;
+                    else if (what.equals("date")) return s.date;
+                    else if (what.equals("event")) return s.event;
+                    else if (what.equals("status")) return s.status;
+                    return null; //return set containing null
+                })
+                .distinct()
+                .collect(Collectors.toSet());
+
+
+//        if ("get ip".equals(query)) {
+//            return records.stream()
+//                    .map(s -> s.ip)
+//                    .distinct()
+//                    .collect(Collectors.toSet());
+//        } else if ("get user".equals((query))) {
+//            return records.stream()
+//                    .map(s -> s.userName)
+//                    .distinct()
+//                    .collect(Collectors.toSet());
+//        } else if ("get date".equals(query)) {
+//            return records.stream()
+//                    .map(s -> s.date)
+//                    .distinct()
+//                    .collect(Collectors.toSet());
+//        } else if ("get event".equals(query)) {
+//            return records.stream()
+//                    .map(s -> s.event)
+//                    .distinct()
+//                    .collect(Collectors.toSet());
+//        } else if ("get status".equals(query)) {
+//            return records.stream()
+//                    .map(s -> s.status)
+//                    .distinct()
+//                    .collect(Collectors.toSet());
+//        }
+        
     }
 }

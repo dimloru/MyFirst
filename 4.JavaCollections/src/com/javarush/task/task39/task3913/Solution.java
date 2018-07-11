@@ -11,6 +11,7 @@ public class Solution {
 
         System.out.println(logParser.getAllSolvedTasksAndTheirNumber(null, null));
 
+        System.out.println(logParser.execute("get event for date = \"30.01.2014 12:56:22\""));
 
     }
 }
