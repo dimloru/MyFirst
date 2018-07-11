@@ -431,10 +431,33 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
             }
         }
 
+        //getting start and end date (through indexes of \")
+        int s1 = ordinalIndexOf(query, "\"", 3) + 1;
+        int s2 = ordinalIndexOf(query, "\"", 4);
+        int e1 = ordinalIndexOf(query, "\"", 5) + 1;
+        int e2 = ordinalIndexOf(query, "\"", 6);
+        String startDateString = (s1 != -1 && s2 != -1) ? query.substring(s1, s2) : null;
+        String endDateStirng = (e1 != -1 && e2 != -1) ? query.substring(e1, e2) : null;
+
+
+
         String fieldIntoLambda = field;
         String valueIntoLambda = value;
 
         return records.stream() // check get, for etc
+                .filter(s -> {
+                    if (startDateString != null && endDateStirng != null) {
+                        try {
+                            Date startDate = dateFormat.parse(startDateString);
+                            Date endDate = dateFormat.parse(endDateStirng);
+                            return s.date.after(startDate) && s.date.before(endDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    }
+                    return true;
+                })
                 .filter(s -> {
                     if (fieldIntoLambda == null || valueIntoLambda == null) return true;
                     //  ip, user, date, event или status
@@ -493,5 +516,12 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 //                    .collect(Collectors.toSet());
 //        }
         
+    }
+
+    public static int ordinalIndexOf(String str, String substr, int n) {
+        int pos = str.indexOf(substr);
+        while (--n > 0 && pos != -1)
+            pos = str.indexOf(substr, pos + 1);
+        return pos;
     }
 }

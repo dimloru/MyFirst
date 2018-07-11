@@ -11,7 +11,7 @@ public class Solution {
 
         System.out.println(logParser.getAllSolvedTasksAndTheirNumber(null, null));
 
-        System.out.println(logParser.execute("get event for date = \"30.01.2014 12:56:22\""));
+        System.out.println(logParser.execute("get ip for user = \"Amigo\" and date between \"03.01.2014 03:45:23\" and \"29.2.2028 5:4:8\""));
 
     }
 }
