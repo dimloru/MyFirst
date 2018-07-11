@@ -418,6 +418,11 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<Object> execute(String query) {
+        // add method: search next pair "field-value"
+        // add to map
+        // get a stream
+        // for each field - value pair -> method getting the stream, applying filter and returning the stream
+
         if (query == null) return null;
 
         String[] splitQuery = query.trim().split(" ");
