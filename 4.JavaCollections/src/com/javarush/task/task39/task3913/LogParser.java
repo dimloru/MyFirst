@@ -444,7 +444,8 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         String startDateString = (s1 != -1 && s2 != -1) ? query.substring(s1, s2) : null;
         String endDateStirng = (e1 != -1 && e2 != -1) ? query.substring(e1, e2) : null;
 
-
+        // might refactor into Map<String, String> getAllParameters
+        // then filter(Set<Record> (or Stream<Record>), Predicate<Record> filter) for each Entry in the above param map
 
         String fieldIntoLambda = field;
         String valueIntoLambda = value;
